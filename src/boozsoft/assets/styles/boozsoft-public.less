@@ -1,0 +1,100 @@
+
+:deep(.ant-layout-header.vben-layout-header.vben-layout-header--light) {
+  background: #5f375c !important
+}
+
+:deep( .vben-layout-header--light .vben-layout-header-action span[role="img"]), :deep(  .vben-app-locale-picker) {
+  color: white !important;
+}
+
+:deep(.vben-layout-header--light .vben-layout-header-action__item:hover), :deep(.vben-header-user-dropdown:hover) {
+  background: rgb(95 74 113) !important
+}
+
+:deep(.vben-header-user-dropdown--light .vben-header-user-dropdown__name) {
+  color: white !important;
+}
+
+:deep(.ant-menu-overflow.ant-menu-horizontal,.ant-menu-submenu,.ant-menu-submenu-inline) {
+  background: #5f375c !important;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+:deep(.zhongzhangMenuItem) .ant-menu-submenu-title:hover:after {
+  right: -15px !important;
+}
+
+:deep(.zhongzhangMenuItem) .ant-menu-submenu-title:after {
+  right: -15px !important;
+}
+
+
+:deep(.ant-menu-submenu-title:after) {
+  content: '';
+  background-image: url(/@/assets/images/triangle.png);
+  background-size: 10px 5px;
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  z-index: 100;
+  top: 22px;
+  right: 5px;
+  transform: rotate(0deg);
+}
+
+:deep(.ant-menu-submenu-title:hover:after) {
+  content: '';
+  background-image: url(/@/assets/images/triangle.png);
+  background-size: 10px 5px;
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  z-index: 100;
+  top: 18px;
+  right: 5px;
+  transform: rotate(180deg);
+}
+
+/*排除*/
+:deep(.ant-menu-overflow-item-rest) {
+  .ant-menu-submenu-title:after {
+    content: '';
+    background-image: unset;
+  }
+}
+
+:deep(.ant-layout) {
+  background: #b4c8e3 !important;
+}
+
+/* ------------------------- 全局样式人为干预 start ------------------------- */
+ body, th {
+   font-family: "Microsoft YaHei UI Lightsss" !important;
+ }
+
+.ant-menu-item-active {
+  background-color: #0096c7 !important;
+  color: white !important;
+}
+
+.digital-font-arial {
+  font-family: Arial;
+}
+
+/*.app-container{*/
+/*  width:100% !important;*/
+/*  height:100% !important;*/
+/*}*/
+/*.vben-layout-content.full{*/
+/*  overflow: hidden;*/
+/*}*/
+/* ------------------------- 全局样式人为干预 end ------------------------- */
+/* 全局select下拉内容宽度自适应*/
+:deep(.ant-select-dropdown){
+  width: auto !important;
+  min-width: 250px !important;
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+    background-color: #c9c9c9 !important;
+  }
+}

@@ -1,0 +1,506 @@
+@Global-Border-Color: #c9c9c9; // 全局下划线颜色
+@Global-Label-Color: #666666; // 全局#c9c9c9颜色
+@Global-Comm-BcOrText-Color: #0096c7; // 全局#c9c9c9颜色
+.ant-table-container{
+  font-family: Arial;
+}
+
+.app-container {
+  background-color: #b4c8e3;
+  border-radius: 5px;
+  padding: 5px 20px 25px 5px;
+  margin: 10px 10px 5px;
+  height: calc(100% - 20px);
+  .app-container-head {
+    width: 100%;
+    font-size: 22px;
+    display: inline-block;
+    line-height: 0.42857;
+    .app-container-head-top{
+      width: 100%;
+      display: inline-flex;
+      justify-content: space-between;
+    }
+    .container-head-imgdiv{
+      width: 22%;
+    }
+    .ac-head-select{
+      background: transparent;
+      border: none;
+      border-bottom: 1px #aaaaaa solid;
+      text-align: center;
+      .ant-select-selector{
+        border: none;
+      }
+    }
+    .head-index-select {
+      border: 0 !important;
+      background: transparent !important;
+      width: 240px;
+      font-size: 18px;
+      line-height: 38px;
+      height: 38px;
+      text-align-last: center;
+      margin-left: 10px;
+    }
+    .head-index-year-month{
+      .ant-calendar-picker-input{
+        text-align: center;
+        background-color: white;
+        border: none;
+        width: 120px;
+      }
+    }
+
+    .ant-btn-group{
+      float: right;
+      display: inline-block;
+    }
+    .ant-btn-me {
+      color: #0096c7;
+      font-size: 14px;
+    }
+    .container-head-img{
+      float: left;
+      width: 42px;
+      margin-left: 6px;
+    }
+    .container-head-title{
+      margin-top: 5px;
+      padding-left: 1%;
+      float: left;
+      display: inline-block;
+      :deep(.ant-select-selector){
+        border: none;
+        background-color: #f1f1f1;
+        color: black;
+        border-bottom: 1px solid #d2cfcf;
+      }
+      > b {
+      }
+      .noneSpan{
+        padding-left: 3px;
+        font-size: 22px;
+        color: #0096c7;
+      }
+    }
+    .container-head-title2{
+      margin-top: 14px;
+      float: left;
+      display: inline-block;
+      :deep(.ant-select-selector){
+        border: none;
+        background-color: #f1f1f1;
+        color: black;
+        border-bottom: 1px solid #d2cfcf;
+      }
+      > b {
+      }
+      .noneSpan{
+        padding-left: 3px;
+        font-size: 22px;
+        color: #0096c7;
+      }
+    }
+  }
+  .app-container-neck {
+    display: block;
+    //height: 40px;
+    height: 32px;
+    > div{
+      float: right;
+      > button{
+        margin: 0px 1px;
+        font-size: 14px;
+      }
+    }
+    .select-div{
+      .ant-select-selector{
+        border: none;
+        border-bottom: 1px solid #d2cfcf;
+        background-color: #f1f1f1;
+        color: black;
+      }
+    }
+  }
+  .app-container-content{
+    .vben-basic-table{
+      margin-top: .5%;
+    }
+  }
+  .linkage_body{
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    > div:nth-of-type(1){
+      width: 15%;
+    }
+    > div:nth-of-type(2){
+      width: 86%;
+    }
+  }
+}
+
+/*.vben-basic-table{
+  margin-top: .5%;
+}*/
+
+.head-index-year-month{
+  .ant-calendar-picker-input{
+    text-align: center;
+    background-color: #f1efef;
+    border: none;
+    color: black;
+    .ant-calendar-range-picker-input{
+      font-weight: bold;
+      width: 80px;
+    }
+  }
+  .ant-calendar-picker-input::-webkit-input-placeholder{
+    color: #5a5959;
+  }
+  .ant-calendar-picker-input:-moz-placeholder{
+    color: #5a5959;
+  }
+  .ant-calendar-picker-input::-moz-placeholder{
+    color: #5a5959;
+  }
+  .ant-calendar-picker-input:-ms-input-placeholder{
+    color: #5a5959;
+  }
+}
+.group-btn-span{
+  font-size: 14px;
+}
+.group-btn-span:hover{
+  background-color: #0096c7;
+  cursor: pointer;
+}
+.group-btn-span-special{
+  font-size: 14px;
+  display: inline-block;
+  width: 120px;
+  padding: 5px 10%;
+}
+.group-btn-span-special2{
+  width: 120px;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px 10%;
+}
+
+.group-btn-span-special2:hover{
+  cursor: pointer;
+}
+.group-btn-span-special:hover{
+  background-color: #0096c7;
+  cursor: pointer;
+  color: white;
+}
+.app-container {
+  /*本页面图片不可拖动*/
+  img {
+    -webkit-user-drag: none;
+  }
+
+  .ant-btn {
+    border-color: #d2cfcf;
+    font-size: 14px;
+  }
+
+  .ant-btn:hover{
+    background-color: #0096c7;
+    color: white!important;
+  }
+
+  .ant-btn-default{
+    margin: 0 1px;
+  }
+
+  .act-two-d-right{
+    :deep(.ant-select-selector){
+      border-color: #d2cfcf;
+      border-right: none;
+    }
+  }
+  .ant-input-affix-wrapper {
+    border-color: #d2cfcf;
+    color: black;
+  }
+
+  .noneSpan{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+  }
+  .special_select {
+    .ant-select-selector {
+      border-color: #d2cfcf;
+      border-radius: 4px;
+      height: 32px;
+    }
+  }
+}
+.ant-table-wrapper{
+  padding: 0!important;
+  //background: #b4c8e3!important;
+  .ant-table-content{
+    .ant-table-thead{
+      th{
+       /* padding: 5px 8px !important;
+        border-left: 1px solid #e2e2e2 !important;
+        border-bottom: 1px solid #e2e2e2 !important;
+        border-top: 1px solid #e2e2e2 !important;
+        background-color: #f2f2f2;
+        text-align: center;
+        background-color: #d8d8d8 !important;
+        */
+        border-left: 1px solid @Global-Border-Color !important;
+        border-bottom: 1px solid @Global-Border-Color !important;
+        border-top: 1px solid @Global-Border-Color !important;
+        text-align: center !important;
+        background-color: #d8d8d8 !important;
+        font-weight: bold !important;
+
+      }
+
+      .ant-table-row-cell-ellipsis{
+        text-align: center !important;
+      }
+      .ant-table-column-title{
+        font-weight: bold;
+        color: black;
+      }
+    }
+    .ant-table-tbody{
+      tr:nth-of-type(1)>td{
+        padding:-1 !important;
+      }
+      td{
+        border-left: 1px solid #e2e2e2 !important;
+        border-bottom: 1px solid #e2e2e2 !important;
+        color: black;
+        .tableUStyle {
+          color: #0096c9;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .tableUStyle:hover {
+          color: black;
+        }
+
+      }
+    }
+    // ant-checkbox 去掉样式。改用vben-admin自带样式
+    //.ant-checkbox-inner,.ant-radio-inner{
+    //  border-color: #4c4c4c;
+    //  //border-color: #4c4c4c;
+    //}
+    //.ant-checkbox {
+    //  border: 1px solid #999999 !important;
+    //  border-radius: 0 !important;
+    //  margin-top: -10px !important;
+    //}
+  }
+}
+
+.ant-popover-inner-content {
+  padding: 5px 8px;
+}
+.ant-drawer-header{
+  background-color: #0799c8;
+  .ant-drawer-title{
+    color: white;
+    font-weight: bold;
+  }
+  .ant-drawer-close  > span{
+    color: white;
+  }
+  .ant-drawer-close  > span:hover{
+    color: #5f375c;
+  }
+}
+.ant-drawer-body{
+  padding: 10px;
+  .nc-drawer-special-div{
+    height: 50px;
+    background-color: whitesmoke;
+    text-align: center;
+    line-height: 50px;
+    color: #0799c8;
+    font-weight: bold;
+  }
+
+  .ant-collapse-header{
+    font-weight: bold;
+  }
+  ul{
+    font-size: 12px;
+    color: #626262;
+    li{
+      background: #f5f5f5;
+      margin: 5px 0;
+      span:nth-of-type(1){
+        color:  #0799c8;
+        font-weight: bold;
+        margin-left: 1em;
+      }
+    }
+  }
+}
+.p_specifics {
+  text-align: center;
+  width: 80px;
+  padding: 3px 0;
+  margin-bottom: 0;
+}
+
+.p_specifics:hover {
+  cursor: pointer;
+  background-color: #0096c7;
+  color: white;
+}
+.app-container-top{
+  background-color: #f1f1f1;
+  border-radius: 5px 5px 0 0;
+  padding: 10px;
+}
+.app-container-bottom {
+  position: relative;
+
+  :deep(.vben-basic-table) {
+    .ant-table-wrapper {
+      padding: 0 !important;
+
+      .ant-table-thead {
+        th {
+          border-left: 1px solid @Global-Border-Color !important;
+          border-bottom: 1px solid @Global-Border-Color !important;
+          border-top: 1px solid @Global-Border-Color !important;
+          text-align: center !important;
+          background-color: #d8d8d8 !important;
+          font-weight: bold !important;
+        }
+
+        .ant-table-row-cell-ellipsis {
+          text-align: center !important;
+        }
+      }
+
+      .ant-table-tbody {
+        tr.ant-table-measure-row{
+          visibility: collapse !important;
+        }
+        td {
+          border-left: 1px solid @Global-Border-Color !important;
+          border-bottom: 1px solid @Global-Border-Color !important;
+
+          .tableUStyle {
+            color: #0096c9;
+            text-decoration: none;
+            cursor: pointer;
+          }
+
+          .tableUStyle:hover {
+            color: black;
+          }
+        }
+      }
+
+      .ant-checkbox-inner, .ant-radio-inner {
+        border-color: @Global-Border-Color;
+      }
+    }
+  }
+
+  :deep(.a-table-font-arial) {
+    font-family: Arial !important;
+  }
+
+  :deep(.a-table-font-size-16) {
+    th, td {
+      font-size: 16px !important;
+      padding: 4px 8px !important;
+
+      a-table-money-font-size {
+        font-size: 14px !important;
+        color: black;
+      }
+    }
+    .ant-table-tbody {
+      tr:not(:first-child) {
+        td {
+          font-size: 16px !important;
+          padding: 4px 8px !important;
+
+          .a-table-money-font-size {
+            font-size: 14px !important;
+            color: black;
+          }
+          .ant-input-number-input{
+            line-height: 22px;
+            height: 22px;
+          }
+        }
+      }
+    }
+  }
+
+  :deep(.a-table-font-size-12) {
+    th{
+      font-size: 14px !important;
+      padding: 2px 8px !important;
+    }
+    .ant-table-tbody {
+      tr:not(:first-child) {
+        td {
+          font-size: 14px !important;
+          padding: 2px 8px !important;
+
+          .a-table-money-font-size {
+            font-size: 13px !important;
+            color: black;
+          }
+          .ant-input-number-input{
+            line-height: 22px;
+            height: 22px;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.ant-popover-message-title{
+  padding-left: 0 !important;
+}
+.lanmu-table{
+  :deep(.ant-table-content){
+    .ant-table-thead{
+      tr{
+        th{
+          padding: 5px 8px !important;
+          text-align: center !important;
+          font-weight: bold;
+          background-color: #f1f1f1 !important;
+          font-size: 13px !important;
+        }
+      }
+    }
+    .ant-table-tbody{
+      tr{
+        td{
+          padding:0 5px !important;
+          font-size: 12px !important;
+          .ant-radio-button-wrapper{
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+

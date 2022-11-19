@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/payment</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon/payment" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.5,15.5 L8.5,15.5 L4.5,15.5 Z M4.5,13.5 L11.5,13.5 L4.5,13.5 Z M20.5,10.5 L2.5,10.5 L20.5,10.5 Z M2.5,7.5 L20.5,7.5 L2.5,7.5 Z M20.5,6.5 L20.5,16.5 C20.5,17.052 20.052,17.5 19.5,17.5 L3.5,17.5 C2.948,17.5 2.5,17.052 2.5,16.5 L2.5,6.5 C2.5,5.948 2.948,5.5 3.5,5.5 L19.5,5.5 C20.052,5.5 20.5,5.948 20.5,6.5 Z" id="lineart" stroke="#0096c7"></path>
+    </g>
+</svg>

@@ -1,0 +1,46 @@
+<meta charset="utf-8">
+<script>
+  function ping(ip){
+    var img = new Image();
+    var start = new Date().getTime();
+    var flag = false;
+    var isCloseWifi = true;
+    var hasFinish = false;
+    img.onload = function() {
+      if ( !hasFinish ) {
+        flag = true;
+        hasFinish = true;
+        console.log('Ping ' + ip + ' success. ');
+        alert("成功"+ip);
+      }
+    };
+    img.onerror = function() {
+      if ( !hasFinish ) {
+        if ( !isCloseWifi ) {
+          flag = true;
+          console.log('Ping ' + ip + ' success. ');
+          console.log("成功"+ip);
+        } else {
+          console.log('network is not working!');
+        }
+        hasFinish = true;
+      }
+    };
+    setTimeout(function(){
+      isCloseWifi = false;
+      console.log('network is working, start ping...');
+      console.log("开始测试"+ip);
+    },2);
+    img.src = 'http://' + ip + '/' + start;
+    var timer = setTimeout(function() {
+      if ( !flag ) {
+        hasFinish = true;
+        flag = false ;
+        console.log('Ping ' + ip + ' fail. ');
+        console.log("失败"+ip);
+      }
+    }, 3000);
+  }
+
+  ping('www.baidu.com')
+</script>

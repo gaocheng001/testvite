@@ -1,0 +1,43 @@
+<html>
+<meta charset="utf-8"/>
+<script>
+  const aaa={"stockPrintBody":[{"id":"6","tenantId":"bjhzzkgl-003-2022","ccode":"caigoudaohuo","printClass":"1","printName":"批号","printNameP":"batchId","isPrint":"1","printNum":"4","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"7","tenantId":"bjhzzkgl-003-2022","ccode":"caigoudaohuo","printClass":"1","printName":"规格型号","printNameP":"cinvodeType","isPrint":"1","printNum":"3","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"8","tenantId":"bjhzzkgl-003-2022","ccode":"caigoudaohuo","printClass":"1","printName":"存货编码","printNameP":"cinvode","isPrint":"1","printNum":"1","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"9","tenantId":"bjhzzkgl-003-2022","ccode":"caigoudaohuo","printClass":"1","printName":"条形码","printNameP":"bcheck1","isPrint":"1","printNum":"0","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"10","tenantId":"bjhzzkgl-003-2022","ccode":"caigoudaohuo","printClass":"1","printName":"存货名称","printNameP":"cinvodeName","isPrint":"1","printNum":"2","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"3","tenantId":"bjhzzkgl-003-2022","ccode":"ceshi1","printClass":"1","printName":"存货名称","printNameP":"cinvodeName","isPrint":"1","printNum":"2","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"4","tenantId":"bjhzzkgl-003-2022","ccode":"ceshi1","printClass":"1","printName":"规格型号","printNameP":"cinvodeType","isPrint":"1","printNum":"3","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"2","tenantId":"bjhzzkgl-003-2022","ccode":"ceshi1","printClass":"1","printName":"存货编码","printNameP":"cinvode","isPrint":"1","printNum":"1","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"1","tenantId":"bjhzzkgl-003-2022","ccode":"ceshi1","printClass":"1","printName":"条形码","printNameP":"bcheck1","isPrint":"1","printNum":"0","printDq":"LL","printKd":"100","fontSime":"14"},{"id":"5","tenantId":"bjhzzkgl-003-2022","ccode":"ceshi1","printClass":"1","printName":"批号","printNameP":"batchId","isPrint":"1","printNum":"4","printDq":"LL","printKd":"100","fontSime":"14"}],"stockPrint":[{"id":"4","tenantId":null,"ccode":"caigoudaohuo","printModel":"采购到货单","iyear":null,"cstyle":"0","titleName":"北京采购到货单","titleSize":null},{"id":"6","tenantId":null,"ccode":"caigoudaohuo","printModel":"采购到货单","iyear":null,"cstyle":"0","titleName":"香港采购到货单","titleSize":null},{"id":"1","tenantId":null,"ccode":"caigouruku","printModel":"采购入库单","iyear":null,"cstyle":"0","titleName":"武汉采购入库单","titleSize":null},{"id":"7","tenantId":null,"ccode":"caigoudaohuo","printModel":"采购到货单","iyear":null,"cstyle":"1","titleName":"采购到货单","titleSize":null},{"id":"3","tenantId":null,"ccode":"caigouruku","printModel":"采购入库单","iyear":null,"cstyle":"0","titleName":"上海采购入库单","titleSize":null},{"id":"5","tenantId":null,"ccode":"caigoudaohuo","printModel":"采购到货单","iyear":null,"cstyle":"0","titleName":"广州采购到货单","titleSize":null},{"id":"2","tenantId":null,"ccode":"caigouruku","printModel":"采购入库单","iyear":null,"cstyle":"1","titleName":"采购入库单","titleSize":null}],"stockPrintHead":[]}
+
+  function getTypeName(cstyle){
+    if(cstyle==0){
+      return '[自定义]'
+    }else if(cstyle==1){
+      return '[系统]'
+    }''
+  }
+  function toTreeData(aaa){
+    const newArr={
+
+    }
+    aaa.stockPrint.forEach(it=>{
+      let abc={}
+      if(newArr[it.printModel] == null){
+        newArr[it.printModel]={
+          title: getTypeName(it.cstyle)+' '+it.printModel,
+          key: it.id,
+          icon: 'home|svg',
+          target:it,
+          child:[]
+        }
+      }
+      newArr[it.printModel].child.push({
+        title: getTypeName(it.cstyle)+' '+it.printModel,
+        key: it.id,
+        icon: 'home|svg',
+        target:it
+      })
+    })
+    return Object.values(newArr)
+  }
+
+  const newArr=toTreeData(aaa)
+  console.log(newArr)
+
+</script>
+<body></body>
+</html>

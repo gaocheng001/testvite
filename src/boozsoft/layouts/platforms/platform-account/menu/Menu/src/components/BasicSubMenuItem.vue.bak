@@ -1,0 +1,232 @@
+<template>
+  <BasicMenuItem v-if="!menuHasChildren(item) && getShowMenu" v-bind="$props"/>
+  <SubMenu
+    v-if="menuHasChildren(item) && getShowMenu"
+    :class="[theme]"
+    :key="`submenu-${item.path}`"
+    popupClassName="app-top-menu-popup"
+  >
+    <Import
+      @reloadProjects="()=>{}"
+      @register="registerImportPage"
+    />
+    <ZcAuthorize
+      @register="registerAuthorizePage"
+    />
+    <CancelClose
+      @register="registerCancelPage"
+    />
+    <template #title>
+      <MenuItemContent v-bind="$props" :item="item"/>
+    </template>
+    <div
+      class="menu-panel-content"
+      :style="{ width: 160 * item.children?.length + 'px' }"
+      v-if="null != item.children">
+<!--      v-if="null != item.children">-->
+      <div
+        class="two-children-item"
+        style="border-right: 1px #e8e8e8 solid"
+        :style="{height: (30+(30*childrenItem.children?.length))+'px'}"
+        v-for="childrenItem in item.children || []"
+        :maxLength="changeHigh(item.children)"
+      >
+        <div class="two-children-item-title">{{ childrenItem.name }}</div>
+        <div
+          class="three-children-item"
+          v-for="(threeChildrenItem, index) in childrenItem.children || []"
+        >
+          <div v-if="threeChildrenItem.name === '导入凭证'" class="three-children-item-title"
+               @click="openImportPage()">
+            &emsp;{{ threeChildrenItem.name }}
+          </div>
+          <div v-else-if="threeChildrenItem.name === '管理类别授权'" class="three-children-item-title"
+               @click="openAuthorizePage()">
+            &emsp;{{ threeChildrenItem.name }}
+          </div>
+          <div v-else-if="threeChildrenItem.path=='/zhongZhang/ends/ends-em-bill/un-bill-list'" class="three-children-item-title" @click="openCancelPage()">
+            &emsp;{{ threeChildrenItem.name }}
+          </div>
+          <div v-else class="three-children-item-title" @click="toRouting(threeChildrenItem.path)">
+            &emsp;{{ threeChildrenItem.name }}
+          </div>
+          <!--
+                      <div class="three-children-item-title" v-if="null != threeChildrenItem.children && threeChildrenItem.children.length > 0">
+                       &emsp;{{threeChildrenItem.name }}&emsp;⮷
+                      </div>
+                      <div class="four-children-item"  v-for="fourChildrenItem in threeChildrenItem.children || []"  @click="toRouting(fourChildrenItem.path)">
+                        &emsp;&emsp;{{fourChildrenItem.name }}
+                      </div>-->
+        </div>
+        <template
+          v-if="childrenItem.children != null && childrenItem.children.length < maxLength"
+          v-for="index in maxLength - childrenItem.children.length"
+        >
+          <div class="three-children-item-title"> &emsp;</div>
+        </template>
+
+      </div>
+    </div>
+  </SubMenu>
+</template>
+<script lang="ts">
+import type {Menu as MenuType} from '/@/router/types';
+import {defineComponent, computed, ref, watch} from 'vue';
+import {Menu} from 'ant-design-vue';
+import {useDesign} from '/@/hooks/web/useDesign';
+import {itemProps} from '../props';
+import BasicMenuItem from './BasicMenuItem.vue';
+import MenuItemContent from './MenuItemContent.vue';
+import {RouteLocationRaw} from 'vue-router';
+import router from '/@/router';
+import Import from "/@/views/boozsoft/global/popup/accvoucher/import.vue";
+import ZcAuthorize from "/@/views/boozsoft/management/im-unit-three/popup/Authorization.vue";
+import CancelClose from "/@/views/boozsoft/system/qi-mo-jie-zhang/popup/CancelClose.vue";
+import {useModal} from "/@/components/Modal";
+import {getCurrentAccountName, getCurrentAccountYear} from "/@/api/task-api/tast-bus-api";
+
+export default defineComponent({
+  name: 'BasicSubMenuItem',
+  isSubMenu: true,
+  components: {
+    BasicMenuItem,
+    SubMenu: Menu.SubMenu,
+    MenuItemContent, Import,ZcAuthorize,CancelClose
+  },
+  props: itemProps,
+  setup(props) {
+    const [registerImportPage, {openModal: openImportPageM}] = useModal()
+    const [registerAuthorizePage, {openModal: openAuthorizePageM}] = useModal()
+    const [registerCancelPage, { openModal: openCancelPageM }] = useModal()
+    const hideMenu = ref(false);
+    watch(
+      props,
+      () => {
+        if (props.item != null) {
+          hideMenu.value = props.item.hideMenu;
+        }
+      },
+      {immediate: true}
+    );
+
+    const maxLength = ref(0);
+    const {prefixCls} = useDesign('basic-menu-item');
+    const getShowMenu = computed(() => {
+      return !props.item.meta?.hideMenu;
+    });
+
+    function menuHasChildren(menuTreeItem: MenuType): boolean {
+      return (
+        Reflect.has(menuTreeItem, 'children') &&
+        !!menuTreeItem.children &&
+        menuTreeItem.children.length > 0
+      );
+    }
+
+    function changeHigh(list: any) {
+      // 获取当前list 最大数量 高度
+      list.forEach((item) => {
+        if (item.children == null) {
+          return;
+        }
+        let value = item.children.length;
+        if (maxLength.value < value) {
+          maxLength.value = value;
+        }
+      });
+    }
+
+    function openImportPage() {
+      openImportPageM(true, {
+        data: {'schemaName': getCurrentAccountName(true)}
+      })
+    }
+
+    function openAuthorizePage() {
+      openAuthorizePageM(true, {
+        'schemaName': getCurrentAccountName(true)
+      })
+    }
+    function openCancelPage(){
+      openCancelPageM(true, {
+        'schemaName': getCurrentAccountName(true),
+        'year': getCurrentAccountYear()
+      })
+    }
+    return {
+      hideMenu,
+      prefixCls,
+      menuHasChildren,
+      getShowMenu,
+      toRouting(path: RouteLocationRaw) {
+        router.push(path);
+      },
+      changeHigh,
+      maxLength,
+      openImportPage,
+      openAuthorizePage,
+      openCancelPage,
+      registerCancelPage,
+      registerImportPage,
+      registerAuthorizePage,
+    };
+  },
+});
+</script>
+<style>
+.ant-menu-submenu-popup::before {
+  width: 0;
+}
+</style>
+<style lang="less" scoped>
+/*菜单面板样式*/
+:deep(.ant-menu-submenu-title:hover) {
+  color: #c6c6c6 !important;
+}
+
+.ant-menu-submenu {
+  .menu-panel-content {
+    * {
+      background-color: white;
+      font-size: 14px;
+    }
+
+    .two-children-item {
+      display: inline-block;
+      vertical-align: top;
+      width: 160px;
+      line-height: 30px;
+
+      .two-children-item-title {
+        text-align: center;
+        font-weight: bold;
+        color: black;
+      }
+
+      .two-children-item-title:hover {
+        /* background-color: #f1adad;
+         cursor: pointer;*/
+      }
+
+      .three-children-item {
+        color: #3b3b3b;
+        text-align: justify;
+
+        .three-children-item-title:hover {
+          background-color: #0096c7;
+          cursor: pointer;
+          color: white;
+        }
+
+        .four-children-item {
+        }
+
+        .four-children-item:hover {
+          /*  background-color: #f1adad;
+            cursor: pointer;*/
+        }
+      }
+    }
+  }
+}
+</style>

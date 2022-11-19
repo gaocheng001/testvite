@@ -1,0 +1,272 @@
+.app-financial-info {
+  background: rgb(241, 239, 239);
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px 20px;
+  height: calc(100% - 20px);
+  .a-container-head{
+    position: relative;
+    .a-c-head-title{
+      text-align: left;
+      height: 45px;
+      border-bottom: 1px solid #d8d4d4;
+      img{
+        float: left;
+        margin: 0 10px;
+      }
+      h2 {
+        font-weight: bold;
+        font-size: 20px;
+      }
+    }
+    .a-c-head-btns{
+      display: block;
+      position: absolute;
+      //right: 0;
+      right: 36%;
+      left: 15%;
+      top: 0;
+      .a-c-h-btns-group > button{
+        color: blue;
+      }
+    }
+  }
+
+  .a-container-content{
+    margin-top: 10px;
+    height: calc(100% - 60px);
+    background-color: white;
+    :deep(.ant-tabs-card){
+      height: 100%;
+      .ant-tabs-nav{
+        width: 180px;
+        .ant-tabs-nav-wrap{
+          background-color: #0096c7;
+        }
+        .ant-tabs-tab,.ant-tabs-tab-active{
+          height: 80px;
+          line-height: 80px;
+          font-weight: bold;
+          background-color: #0096c7;
+          padding-right: 22px;
+        }
+        .ant-tabs-tab-active{
+          color: #0096c7 !important;
+          background-color: white;
+          .ant-tabs-tab-btn > span{
+            color: #0096c7 !important;
+          }
+        }
+        .ant-tabs-tab:before {
+          content: "";
+          height: 50px;
+          width: 50px;
+          top: 15%;
+          left: 15%;
+          display: block;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+      /*  .ant-tabs-tab:nth-of-type(1):before {
+          background-image: url('/img/menu/financial-info-menu/tab01.png');
+        }
+        .ant-tabs-tab:nth-of-type(2):before {
+          background-image: url('/img/menu/financial-info-menu/tab02.png');
+        }
+        .ant-tabs-tab:nth-of-type(3):before {
+          background-image: url('/img/menu/financial-info-menu/tab03.png');
+        }
+        .ant-tabs-tab:nth-of-type(4):before {
+          background-image: url('/img/menu/financial-info-menu/tab04.png');
+        }
+        .ant-tabs-tab:nth-of-type(5):before {
+          background-image: url('/img/menu/financial-info-menu/tab05.png');
+        }
+        .ant-tabs-tab:nth-of-type(6):before {
+          background-image: url('/img/menu/financial-info-menu/tab06.png');
+        }
+        .ant-tabs-tab:nth-of-type(7):before {
+          background-image: url('/img/menu/financial-info-menu/tab03.png');
+        }
+        .ant-tabs-tab:nth-of-type(8):before {
+          background-image: url('/img/menu/financial-info-menu/tab02.png');
+        }
+        .ant-tabs-tab:nth-of-type(9):before {
+           background-image: url('/img/menu/financial-info-menu/tab01.png');
+         }*/
+      }
+      .ant-tabs-content{
+        height: 100%;
+        background-color: white;
+        .a-container-content-one{
+          overflow-y: auto;
+          .acco-btn{
+            width: 1060px;
+            text-align: right;
+            padding: 10px 0 0;
+            .ant-btn{
+              margin:0 5px;
+            }
+          }
+          .acco-sideline{
+            position: relative;
+            border: 1px #acabab solid;
+            width: 1060px;
+            margin: 10px 1% 20px;
+
+            > span{
+              position: absolute;
+              top: -12px;
+              left: 50px;
+              background: white;
+              padding: 0 15px;
+              color: #787777;
+            }
+            .ant-checkbox-inner,.ant-radio-inner{
+              border-color: #4c4c4c !important;
+            }
+            .acco-sideline-content-one{
+              > div{
+                width: 45%;
+                display: inline-block;
+                padding: 10px 50px;
+                .ant-select-selector,.ant-input,.ant-input-number{
+                  border:none;
+                  border-bottom: 1px slategrey solid;
+                }
+                .ant-select-disabled  .ant-select-selector,.ant-input-disabled,.ant-input-number-disabled{
+                  background: white;
+                  color: black;
+                }
+                .against-input-mark{
+                  border:none;
+                  border-bottom: 1px slategrey solid;
+                  background-color: white;
+                  color: black;
+                }
+              }
+            }
+            .acco-sideline-content-two{
+              width: 100%;
+              margin: 20px 50px;
+              .ant-row{
+                .ant-col{
+                  margin: 10px 0;
+                  .ant-checkbox-wrapper-disabled{
+                    > span{
+                      color: black;
+                    }
+                  }
+                }
+              }
+            }
+            .acco-sideline-content-there{
+              width: 100%;
+              margin: 20px 50px;
+              ul{
+                li{
+                  padding: 5px 0;
+                  .ant-radio-group{
+                    width: 80%;
+                    .ant-radio-wrapper{
+                      margin: 0 8%;
+                    }
+                    .ant-radio-wrapper-disabled{
+                      > span{
+                        color: black;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .a-container-content-two{
+          margin-top: 50px;
+          .acco-btn{
+            width: 1060px;
+            text-align: right;
+            padding: 10px 0 0;
+            .ant-btn{
+              margin:0 5px;
+            }
+          }
+          .a-table-font-size-14 td,
+          .a-table-font-size-14 th {
+            font-size: 14px !important;
+            padding: 2px 8px !important;
+          }
+          .ant-select-disabled > .ant-select-selector{
+            color: #252525 !important;
+            background: white !important;
+          }
+          .acct-up{
+            position: relative;
+            border: 1px #acabab solid;
+            width: 1060px;
+            margin: 10px 1% 20px;
+
+            > span{
+              position: absolute;
+              top: -12px;
+              left: 50px;
+              font-size: 15px;
+              background: white;
+              padding: 0 15px;
+            }
+            > div{
+              margin: 15px;
+              color: black;
+            }
+            .acctd-span{
+              margin: 0 10px;
+            }
+            .ant-select-selector,.ant-input{
+              border:none;
+              border-bottom: 1px slategrey solid;
+              text-align: center;
+            }
+            .ant-input{
+              pointer-events: none;
+            }
+          }
+          .acct-down{
+            position: relative;
+            border: 1px #acabab solid;
+            width: 1060px;
+            margin: 10px 1% 20px;
+
+            > span{
+              position: absolute;
+              top: -12px;
+              left: 50px;
+              font-size: 15px;
+              background: white;
+              padding: 0 15px;
+            }
+
+            >div{
+              text-align: center;
+              margin: 10px 20px;
+              tr > th{
+                text-align: center;
+                font-weight: bold;
+              }
+              .ant-input{
+                width: 85%;
+              }
+            }
+            .ant-select-selector,.ant-input{
+              border:none;
+              border-bottom: 1px slategrey solid;
+            }
+          }
+        }
+        .ant-table-align-left{
+          text-align: center!important;
+        }
+      }
+    }
+  }
+}

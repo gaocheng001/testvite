@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>iframe+postMessage跨域通信 子页面</title>
+</head>
+<body>
+<h2>子页面</h2>
+<div>
+
+</div>
+</body>
+<script type="module">
+    import {NcLogin} from 'http://www.ncdev.com:3000/public/hooks/NcLoginHook.js'
+
+    const host = 'http://www.ncdev.com:3000/public/index.html'
+    NcLogin(host, ({openId}) => {
+        const [user, password] = openId.split(',')
+        console.warn('用户名', user)
+        console.warn('密码', password)
+    })
+</script>
+<script>
+
+
+</script>
+</html>

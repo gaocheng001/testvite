@@ -1,0 +1,63 @@
+@Global-Border-Color: #c9c9c9; // 全局下划线颜色
+:deep(.alone-basic-table) {
+  .ant-table-wrapper {
+    padding: 0 !important;
+    .ant-table-thead {
+      th {
+        border-left: 1px solid @Global-Border-Color !important;
+        border-bottom: 1px solid @Global-Border-Color !important;
+        border-top: 1px solid @Global-Border-Color !important;
+        text-align: center !important;
+        background-color: #d8d8d8 !important;
+        font-weight: bold !important;
+      }
+
+      .ant-table-row-cell-ellipsis {
+        text-align: center !important;
+      }
+    }
+
+    .ant-table-tbody {
+      td {
+        border-left: 1px solid @Global-Border-Color !important;
+        border-bottom: 1px solid @Global-Border-Color !important;
+
+        .tableUStyle {
+          color: #0096c9;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .tableUStyle:hover {
+          color: black;
+        }
+      }
+    }
+
+    th{
+      font-size: 14px !important;
+      padding: 2px 8px !important;
+    }
+    .ant-table-tbody {
+      tr:not(:first-child) {
+        td {
+          font-size: 14px !important;
+          padding: 2px 8px !important;
+
+          .a-table-money-font-size {
+            font-size: 13px !important;
+            color: black;
+          }
+          .ant-input-number-input{
+            line-height: 22px;
+            height: 22px;
+          }
+        }
+      }
+    }
+
+    .ant-checkbox-inner, .ant-radio-inner {
+      border-color: @Global-Border-Color;
+    }
+  }
+}

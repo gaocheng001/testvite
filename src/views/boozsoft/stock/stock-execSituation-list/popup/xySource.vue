@@ -1,0 +1,205 @@
+<template>
+  <BasicModal width="700px"
+              v-bind="$attrs"
+              :title="''"
+              :maskClosable="false"
+              :draggable="false"
+              @register="register">
+    <template #title>
+      <div style="display: flex;margin-left: 10px;margin-top: 5px;" class="vben-basic-title">
+        <SearchOutlined style="font-size: 29px;color: rgb(21, 142, 184)"/>
+        <span style="line-height: 29px;font-size: 20px;margin-left: 10px;color: rgb(21, 142, 184)">联查单据</span>
+      </div>
+    </template>
+    <div class="nc-query-open-content">
+      <div style="background-color: #158eb8;height: 50px;padding-top: 10px;padding-left:10px;border-radius: 5px;">
+        <div style="float: right;margin-right: 5px;">
+          <button type="button" class="ant-btn ant-btn-me" @click="findAllXySource"><span>刷新</span></button>
+        </div>
+      </div>
+      <div class="content-body" style="margin-top: 5px;">
+        <BasicTable
+          :scroll="{ y: 220 }"
+          :loading="tableLoading"
+          class="alone-basic-table"
+          size="small"
+          @register="registerTable"
+        >
+          <template #xyBillStyle="{ record }">
+            {{ record.xyBillStyle=='XSCKD'?'销售出库单':record.xyBillStyle=='XSFP'?'销售发票':record.xyBillStyle=='XHD'?'销售退货单':record.xyBillStyle=='CGDHD'?'采购到货单':'' }}
+          </template>
+          <template #xyccode="{ record }">
+            <a @click="goRuter(record)">{{ record.xyccode }}</a>
+          </template>
+          <template #baseQuantity="{ record }">
+            {{ toThousandFilter(record.baseQuantity) }}
+          </template>
+          <template #isum="{ record }">
+            {{ toThousandFilter(record.isum) }}
+          </template>
+
+        </BasicTable>
+      </div>
+    </div>
+    <template #footer>
+      <div style="height: 35px">
+        <div style="float: right">
+          <Button @click="handleOk" type="primary">关闭</Button>
+        </div>
+      </div>
+    </template>
+  </BasicModal>
+</template>
+<script setup="props, { content }" lang="ts">
+import {reactive, ref} from 'vue';
+import {BasicModal, useModalInner} from '/@/components/Modal';
+import {SearchOutlined} from '@ant-design/icons-vue';
+import {Button, DatePicker, Radio, Select} from 'ant-design-vue';
+import {BasicTable, useTable} from '/@/components/Table'
+import {useRouteApi} from "/@/utils/boozsoft/datasource/datasourceUtil";
+import {findByXyOutDataSourrce} from "/@/api/record/stock/stock-xy-source";
+import router from "/@/router";
+import {findCangkuJoinName} from "/@/api/record/stock/stock-cangku-level-record";
+import {findJieSuanByCaigouDaoHuo} from "/@/api/record/stock/stock-jiesuan";
+
+const RangePicker = DatePicker.RangePicker;
+const SelectOption = Select.Option;
+const RadioGroup = Radio.Group;
+
+const emit = defineEmits(['register', 'query']);
+const tableLoading: any = ref(false);
+const formItems: any = ref({});
+const schemaName = ref('')
+const ccode = ref('')
+const xytype = ref('')
+const pageParameter = reactive({
+  list:'',
+  syccode:'',
+  sytype:'CGDHD',
+  xytype:'',
+  searchConditon: {
+    requirement: 'ccode',
+    value: '',
+  },
+})
+
+const tableSelectedRowKeys = ref([])
+
+const [registerTable, {getDataSource, setTableData}] = useTable({
+  columns: [
+    {
+      title: '单据类型',
+      dataIndex: 'xyBillStyle',
+      width: '90px',fixed: 'left',
+      slots: {customRender: 'xyBillStyle'}
+    },
+    {
+      title: '单据编码',
+      dataIndex: 'xyccode',
+      width: '120px',
+      align: 'left',fixed: 'left',ellipsis: true,
+      slots: {customRender: 'xyccode'}
+    }, {
+      title: '单据日期',
+      dataIndex: 'xyccodeDate',
+      width: '90px',
+      align: 'left',ellipsis: true,
+    },
+    {
+      title: '仓库',
+      dataIndex: 'cwhcodeName',
+      width: '100px',
+      align: 'left',
+    },
+    {
+      title: '业务员',
+      dataIndex: 'psnName',
+      width: '100px',
+      align: 'left',ellipsis: true,
+    },
+    {
+      title: '业务部门',
+      dataIndex: 'deptName',
+      width: '100px',
+      align: 'left',ellipsis: true,
+    },{
+      title: '备注',
+      dataIndex: 'cmemo',
+      width: '140px',ellipsis: true,
+    }
+  ],
+  bordered: true,
+  showIndexColumn: true,
+  pagination: false
+})
+
+const [register, {closeModal, setModalProps}] = useModalInner(async (o) => {
+  formItems.value = {}
+  schemaName.value = o.dynamicTenantId
+  ccode.value = o.ccode
+  xytype.value = o.xytype
+  findAllXySource()
+  setModalProps({minHeight: 200});
+});
+
+async function findAllXySource() {
+  tableLoading.value=true
+  pageParameter.syccode=ccode.value
+  pageParameter.xytype=xytype.value
+  let list = await useRouteApi(findByXyOutDataSourrce,{schemaName: schemaName})({billStyle:'XHD',code:ccode.value,type: xytype.value  })
+  let tableLength=0
+  for (let i = 0; i < list.length; i++) {
+    list[i].cwhcodeName=await getCKName(list[i].cwhcode)
+    tableLength++
+  }
+  if(tableLength==list.length){
+    tableLoading.value=false
+    let len = list.length
+    for (let i = 0; i < (25 - len); i++) {
+      list.push({})
+    }
+    setTableData(list)
+  }
+}
+async function getCKName(id) {
+  let str=''
+  let cangkuJoinName=await useRouteApi(findCangkuJoinName,{schemaName: schemaName})(  {id:id})
+  if(cangkuJoinName.length>0){
+    str=cangkuJoinName[0].cangkuRecordJoinName
+  }
+  return str
+}
+async function handleOk() {
+  closeModal();
+  return true;
+}
+//金额格式化
+function toThousandFilter(num:any) {
+  if (num=='' || num==null){
+    return ''
+  }
+  return (+num || 0).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+}
+// 跳转对应的单据
+function goRuter(data) {
+  if(pageParameter.xytype=='XSCKD'){
+    router.push({path: '/kc-xsDepot',query: {ccode:data.xyccode,bdate: data.xyccodeDate,bdocum: false?1:0,type:'show'}});
+  }else if(pageParameter.xytype=='XHD'){
+    router.push({path: '/xs-arrive',query: {ccode:data.xyccode,bdate: data.xyccodeDate,bdocum: false?1:0,type:'show'}});
+  }else if(pageParameter.xytype=='CGDHD'){
+    router.push({path: 'cg-return',query: {ccode:data.xyccode}});
+  }else if(pageParameter.xytype=='CGJSD'){
+    router.push({path: 'cg-jiesuan',query: {ccode:data.xyccode}});
+  }
+  handleOk()
+}
+</script>
+<style lang="less" scoped="scoped">
+@import '/@/assets/styles/part-open.less';
+@import '/@/assets/styles/alone-basic-table.less';
+
+.nc-query-open-content {
+  padding: 1%;
+  height: 100%;
+}
+</style>

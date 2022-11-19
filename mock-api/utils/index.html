@@ -1,0 +1,137 @@
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <script charset="UTF-8" src="./aa.js"></script>
+</head>
+<body>
+
+
+<script>
+  function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  function createRow({uniqueCode, ccode, date, jie, dai, other}) {
+
+  }
+
+
+  function createQiChuPingZheng({uniqueCode, ccode, date, jie, dai}) {
+    return {
+      "id": null,
+      "uniqueCode": null,
+      "vouchUnCode": null,
+      "csign": "记",
+      "iyear": null,
+      "imonth": null,
+      "iyperiod": null,
+      "iperiod": "00",
+      "dbillDate": "2021-01-12",
+      "inoId": "0001",
+      "inid": null,
+      "idoc": null,
+      "cdigest": "张颖报CA服务费",
+      "ccode": "1001",
+      "ccodeName": "库存现金",
+      "md": "0.00",
+      "mc": "2700.00",
+      "mdF": null,
+      "mcF": null,
+      "ndS": null,
+      "ncS": null,
+      "nfrat": null,
+      "cbill": "由鲁萍",
+      "ccashier": "侯晓聪",
+      "ccashierDate": null,
+      "ccheck": "罗锋",
+      "ccheckDate": null,
+      "cdirector": null,
+      "cbook": "",
+      "ibook": null,
+      "ibookDate": null,
+      "pjCsettle": null,
+      "pjId": null,
+      "pjDate": null,
+      "cdeptId": null,
+      "cpersonId": null,
+      "ccusId": null,
+      "csupId": null,
+      "projectClassId": null,
+      "projectId": null,
+      "ifrag": null,
+      "cashProject": null,
+      "icoord": null,
+      "coordAccname": null,
+      "coordDate": null,
+      "coordId": null,
+      "cunitPrice": null,
+      "unitMeasurement": null,
+      "foreignCurrency": null,
+      "statementNum": null,
+      "ljMd": null,
+      "ljMc": null,
+      "cdfine1": null,
+      "cdfine2": null,
+      "cdfine3": null,
+      "cdfine4": null,
+      "cdfine5": null,
+      "cdfine6": null,
+      "cdfine7": null,
+      "cdfine8": null,
+      "cdfine9": null,
+      "cdfine10": null,
+      "cdfine11": null,
+      "cdfine12": null,
+      "cdfine13": null,
+      "cdfine14": null,
+      "cdfine15": null,
+      "cdfine16": null,
+      "cdfine17": null,
+      "cdfine18": null,
+      "cdfine19": null,
+      "cdfine20": null,
+      "cdfine21": null,
+      "cdfine22": null,
+      "cdfine23": null,
+      "cdfine24": null,
+      "cdfine25": null,
+      "cdfine26": null,
+      "cdfine27": null,
+      "cdfine28": null,
+      "cdfine29": null,
+      "cdfine30": null
+    }
+  }
+
+  function abc({
+                 cbill,
+                 ccashier,
+                 ccheck,
+
+               }) {
+  }
+
+  const qichuList = []
+  for (let i = 0; i < 100; i++) {
+    list.push(
+      createQiChuPingZheng({
+        uniqueCode: guid(),
+        ccode: '1001',
+        date: '',
+        jie: '10.00',
+        dai: '10.00'
+      })
+    )
+  }
+
+  createRow({})
+  [...]
+  console.log(list)
+</script>
+</body>
+
+</html>

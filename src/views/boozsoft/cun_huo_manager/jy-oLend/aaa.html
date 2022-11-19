@@ -1,0 +1,74 @@
+<script>
+  function makeCode(yearMonth) {
+    return 'JA-' + yearMonth + '-0001'
+  }
+
+  function createApiData(data) {
+    data.ccode=makeCode()
+    return ''
+  }
+
+  function save(ccode) {
+    // save master
+    const master = {
+      tenantId: '',
+      iyear: '',
+      ccode,
+      ddate: '',
+      jrjcUser: '',
+      jrjcUserId: '',
+      jrjcStyle: '',
+      cwhcode: '',
+      cdepcode: '',
+      kgUserid: '',
+      bcheck: '',
+      bcheckTime: '',
+      bcheckUser: '',
+      cmaker: '',
+      cmakeDate: '',
+      cfree1: '',
+      cfree2: '',
+      cfree3: '',
+      cfree4: '',
+      cfree5: '',
+    }
+
+
+    // save slave
+    const slave = [
+      {
+        tenantId: '',
+        iyear: '',
+        ccode,
+        lineId: '',
+        ddate: '',
+        cinvode: '',
+        cwhcode: '',
+        cwhcode1: '',
+        cwhcode2: '',
+        cwhcode3: '',
+        cwhcode4: '',
+        cwhcode5: '',
+        cwhcode6: '',
+        batchId: '',
+        dpdate: '',
+        dvdate: '',
+        baseQuantity: '',
+        subQuantity1: '',
+        subQuantity2: '',
+        jrjcFlag: '',
+        jrjcCcode: '',
+        jrjcLineId: '',
+        jrjcQuantity: '',
+        jrjcDate: '',
+        cmemo: '',
+        cfree1: '',
+        cfree2: '',
+        cfree3: '',
+        cfree4: '',
+        cfree5: '',
+      }
+    ]
+  }
+
+</script>

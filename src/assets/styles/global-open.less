@@ -1,0 +1,56 @@
+.vben-basic-title{
+  color: #0096c7 !important;
+  font-size: 20px !important;
+}
+
+.ant-modal-body {
+  padding: 0px;
+  border: 1px solid #0096c7;
+  border-left: none;
+  border-right: none;
+  .scrollbar{
+    padding: 10px;
+    .scrollbar__wrap{
+      margin-bottom: 0px !important;
+    }
+  }
+}
+.ant-modal-footer{
+  .ant-btn-primary:hover{
+    background: #50a7c4;
+    border-color: black;
+  }
+}
+
+.nc-open-content{ // 弹框表单样式
+  /*去除横线*/
+  .ant-calendar-picker-input.ant-input,
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+  .ant-input-affix-wrapper,.pure-ant-input{
+    border: none;
+    border-bottom: solid 1px rgb(191, 191, 191) !important;
+    width: 100%;
+  }
+  /*加深单选框*/
+  .ant-radio-inner{
+    border-color: #bfbfbf;
+  }
+  /*辅助核算输入*/
+  .addonAfter-input{
+    width: 78%;
+    border: none;
+    .ant-input{
+      border: none;
+      pointer-events: none;
+      border-bottom: solid 1px rgb(191, 191, 191) !important;
+    }
+    .ant-input-group-addon{
+      border-left: 1px solid #eeeeee;
+      padding: 0 3px;
+    }
+    .ant-input-group-addon:hover{
+      cursor: pointer;
+      border-color: #0096c7;
+    }
+  }
+}

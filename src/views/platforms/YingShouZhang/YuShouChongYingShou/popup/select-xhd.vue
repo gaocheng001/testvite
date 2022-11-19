@@ -1,0 +1,434 @@
+<template>
+    <BasicModal
+      width="900px"
+      v-bind="$attrs"
+      title="应收冲应收单选单"
+      @ok="handleOk()"
+      @cancel="closeModal()"
+      wrapClassName="head-title"
+      @register="register"
+    >
+      <template #title>
+        <div style="display: flex;height:30px;margin-left: 10px;margin-top: 10px;" class="vben-basic-title">
+          <span style="font-size: 24px;line-height:30px;">
+            <SearchOutlined style="font-size: 28px;font-weight: bold"/>&nbsp;&nbsp;预收冲应收选单
+          </span>
+        </div>
+      </template>
+      <div class="nc-open-content" style="margin-top: 10px;">
+        <div class="open-content-up" style="margin:0;padding:0;">
+          <div style="background:#0096c7;padding:10px;border-radius: 2px;margin-bottom:10px;display: flex;justify-content : space-between;color: #ffffff;font-weight: bold">
+            <div class="a1">
+              <a-select v-model:value="formItems.selectType" style="width: 120px;font-size: 14px;" class="special_select">
+                <a-select-option value="ccode">单据编号</a-select-option>
+                <a-select-option value="cdepcode">部门</a-select-option>
+                <a-select-option value="cpersoncode">业务员</a-select-option>
+              </a-select>
+              <a-input-search
+                placeholder=""
+                style="width: 200px; border-radius: 4px"
+                v-model:value="formItems.selectValue"
+                @search="onSearch"
+              />
+              &emsp;&emsp;
+              <span>单据类型：</span>
+              <a-select v-model:value="formItems.billStyle" style="width: 120px;font-size: 14px;" placeholder="单据类型" class="special_select">
+                <a-select-option value="XHD">销货单</a-select-option>
+                <a-select-option value="SXFP">销售发票</a-select-option>
+                <a-select-option value="YSD">应收单</a-select-option>
+                <a-select-option value="QCYSD">期初应收单</a-select-option>
+              </a-select>
+            </div>
+            <div class="a2">
+              <button
+                type="button"
+                class="ant-btn ant-btn-me"
+              ><span>刷新</span></button>
+            </div>
+          </div>
+
+          <div style="height: 400px;padding:0;display: flex;justify-content : space-between;">
+              <BasicTable
+                :row-selection="{ type: 'checkbox', selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
+                @row-click="condClick"
+                :scroll="{ y: 290 }"
+                @register="registerTable"
+                :dataSource="tableData"
+                class="tables"
+              >
+                <template #billStyle="{ record }">{{formatHxStyle(record.billStyle)}}</template>
+                <template #isum="{ record }">{{toThousandFilter(record.isum)}}</template>
+                <template #whxIsum="{ record }">{{toThousandFilter(sub(record.isum==null?'0':record.isum,record.hxIsum==null?'0':record.hxIsum))}}</template>
+              </BasicTable>
+          </div>
+        </div>
+      </div>
+
+    </BasicModal>
+</template>
+
+<script setup="props, {content}" lang="ts">
+import { PageWrapper } from '/@/components/Page'
+import {nextTick, onMounted, reactive, ref, unref} from 'vue'
+import {BasicModal, useModal, useModalInner} from '/@/components/Modal'
+import {
+  SearchOutlined
+} from '@ant-design/icons-vue'
+import {
+  Select as ASelect,
+  Input as AInput,
+  Checkbox as ACheckbox,
+  Button as AButton,
+  message
+} from 'ant-design-vue'
+
+const AInputSearch = AInput.Search
+const ASelectOption = ASelect.Option
+import {useMessage} from "/@/hooks/web/useMessage";
+import {BasicTable, useTable} from "/@/components/Table";
+import {useRouteApi} from "/@/utils/boozsoft/datasource/datasourceUtil";
+import {findBySkWhxXhd} from "/@/api/record/system/hexiao";
+import {sub, toThousandFilter} from "../../YingShouKuanQiChuYuE/calculation";
+import {findByCvencode} from "/@/api/record/system/arBeginBalance";
+
+const {
+  createErrorModal,
+  createConfirm,
+  createWarningModal
+} = useMessage()
+
+const emit = defineEmits(['register', 'save'])
+
+const formItems: any = ref({
+  selectType: '',
+  selectValue: ''
+})
+
+const dynamicTenantId = ref('')
+const tableData:any = ref([]);
+const tableDataAll:any = ref([]);
+const year:any = ref('')
+const cvencode:any = ref('')
+const hxmxList:any = ref([])
+const arHexiaoAuto:any = ref()
+const arSourceFlag:any = ref()
+const arCheckFlag:any = ref()
+const [register, {closeModal,setModalProps}] = useModalInner(async(data) => {
+  dynamicTenantId.value = data.dynamicTenantId
+  year.value = data.year
+  cvencode.value = data.cvencode
+  hxmxList.value = data.list
+  arHexiaoAuto.value = data.arHexiaoAuto
+  arSourceFlag.value = data.arSourceFlag
+  arCheckFlag.value = data.arCheckFlag
+  await reloadList()
+  state.selectedRowKeys = []
+  checkRow.value = []
+})
+
+const columns = [
+  {
+    title: '单据类型',
+    dataIndex: 'billStyle',
+    ellipsis: true,
+    width: 100,
+    slots: {customRender: 'billStyle'}
+  },
+  {
+    title: '单据日期',
+    dataIndex: 'ddate',
+    align: 'left',
+    ellipsis: true,
+    width: 100,
+  },
+  {
+    title: '单据编号',
+    dataIndex: 'ccode',
+    width: 150,
+    ellipsis: true,
+  },
+  {
+    title: '金额',
+    dataIndex: 'isum',
+    width: 120,
+    align: 'right',
+    ellipsis: true,
+    slots: {customRender: 'isum'}
+  },
+  {
+    title: '未结款金额',
+    dataIndex: 'whxIsum',
+    width: 120,
+    align: 'right',
+    ellipsis: true,
+    slots: {customRender: 'whxIsum'}
+  },
+]
+
+function formatHxStyle(hxStyle){
+  let str = hxStyle
+  if (hxStyle=='XHD'){
+    str = '销货单'
+  } else if (hxStyle=='YSD'){
+    str = '应收单'
+  } else if (hxStyle=='XSFP'){
+    str = '销售发票'
+  } else if (hxStyle=='QCXHD'){
+    str = '期初销货单'
+  } else if (hxStyle=='QCYSD'){
+    str = '期初应收单'
+  } else if (hxStyle=='QCXSFP'){
+    str = '期初销售发票'
+  }
+  return str
+}
+
+// 这是示例组件
+const [registerTable, {reload,getColumns,setTableData,setPagination}] = useTable({
+  columns: columns,
+  bordered: true,
+  showIndexColumn: false,
+  pagination: false,
+  searchInfo: {
+    accId: '',
+    flag: '0',
+  }
+})
+
+const saleousingList:any = ref([])
+const arBeginBalanceList:any = ref([])
+const thisCheckKey:any = ref('')
+async function reloadList(){
+  tableData.value = []
+  tableDataAll.value = []
+  const qcList = await useRouteApi(findByCvencode,{schemaName: dynamicTenantId})({cvencode:cvencode.value,iyear:year.value})
+  if (arSourceFlag.value!='1') {
+    arBeginBalanceList.value = qcList.filter(item => item.busStyle == 'YSD' && item.ysIsumBenbi!='0')
+  } else {
+    arBeginBalanceList.value = qcList.filter(item => item.arStyle == 'YSD' && item.ysIsumBenbi!='0')
+  }
+  tableDataAll.value.push(...saleousingList.value.map(item => {
+    item.billStyle = item.busStyle
+    item.sourcecode = item.ccode
+    item.sourcedate = item.ddate
+    item.sourcetype = 'QC'+item.busStyle
+    item.isum = item.ysIsumBenbi
+    item.type = 'YUE'
+    if (item.hxIsum != null && item.hxIsum != '') {
+      item.whxIsum = sub(item.isum, item.hxIsum)
+    } else {
+      item.whxIsum = item.isum
+    }
+    item.hxMoney = item.whxIsum
+    item.tempOne = item.whxIsum
+    return item
+  }))
+  const saleList = await useRouteApi(findBySkWhxXhd, {schemaName: dynamicTenantId})({
+    year: year.value,
+    cvencode: cvencode.value
+  })
+  if (arSourceFlag.value=='1') {
+    saleousingList.value = saleList.filter(item => item.busStyle !='XHD' && item.busStyle !='QCXHD' && item.bworkable=='1' && item.isum!='0')
+  } else {
+    if(arCheckFlag=='1'){
+      saleousingList.value = saleList.filter(item => item.busStyle !='XSFP' && item.busStyle !='QCXSFP' && item.bworkable=='1' && item.isum!='0')
+    } else {
+      saleousingList.value = saleList.filter(item => item.busStyle !='XSFP' && item.busStyle !='QCXSFP' && item.isum!='0')
+    }
+  }
+  tableDataAll.value.push(...saleousingList.value.map(item => {
+    item.sourcecode = item.ccode
+    item.sourcedate = item.ddate
+    item.sourcetype = item.billStyle
+    item.type = 'XHD'
+    if (item.hxIsum != null && item.hxIsum != '') {
+      item.whxIsum = sub(item.isum, item.hxIsum)
+    } else {
+      item.whxIsum = item.isum
+    }
+    item.hxMoney = ''
+    item.tempOne = ''
+    return item
+  }))
+  tableData.value = tableDataAll.value.filter(item =>{
+    if (hxmxList.value.length>0){
+      return hxmxList.value.map(aa => aa.sourcecode).indexOf(item.ccode) == -1
+    }
+    return item
+  })
+  setTableData(tableData.value)
+}
+
+onMounted(async () => {
+})
+
+const condClick = () => {
+
+}
+
+//选中内容
+const state = reactive<{
+  selectedRowKeys: [];
+  loading: boolean;
+}>({
+  selectedRowKeys: [], // Check here to configure the default column
+  loading: false,
+});
+const checkRow: any = ref([])
+const onSelectChange = (selectedRowKeys, row) => {
+  // console.log('selectedRowKeys changed: ', row);
+  // if(selectedRowKeys.length>0){
+    state.selectedRowKeys = selectedRowKeys;
+    checkRow.value = row
+  // }
+};
+
+async function handleOk() {
+  if (checkRow.value.length>0) {
+    emit('save', unref(checkRow.value));
+    closeModal();
+  } else {
+    createErrorModal({
+      iconType: 'warning',
+      title: '温馨提示',
+      content: '请先需要添加的选择单据！'
+    })
+    return false
+  }
+}
+
+async function onSearch(){
+  tableData.value = tableDataAll.value.filter(item => {
+    //通过部门编码过滤
+    if (formItems.value.selectType == 'psnCode' && formItems.value.selectValue != '') {
+      return item.psnCode.indexOf(formItems.value.selectValue) != -1
+    }
+    //通过部门名称过滤
+    if (formItems.value.selectType == 'psnName' && formItems.value.selectValue != '') {
+      return item.psnName.indexOf(formItems.value.selectValue) != -1
+    }
+    return item
+  })
+  await setPagination({
+    total: tableData.value.length
+  })
+}
+
+</script>
+<style scoped lang="less">
+:deep(.vben-basic-table) {
+  .ant-table-wrapper {
+    .ant-table-measure-row{
+      td{
+        padding: 0!important;
+      }
+    }
+  }
+}
+
+.ant-modal-header{
+  border: none !important;
+}
+.vben-basic-title {
+  color: #0096c7 !important;
+  border: none !important;
+  margin-bottom: -20px !important;
+}
+
+:global(.ant-modal-body) {
+  padding: 0px;
+  border-bottom: 1px solid rgb(1, 129, 226);
+  border-left: none;
+  border-right: none;
+  margin-bottom: 0!important;
+  .scrollbar{
+    padding: 0px;
+    .scroll-container{
+      margin-bottom: 0!important;
+    }
+  }
+}
+
+.nc-open-content {
+  input:not(.ant-select-selection-search-input,.ant-input){
+    width: 50%;
+    border: none !important;
+    border-bottom: 1px solid #bdb9b9 !important;
+  }
+
+  .ant-input:focus {
+    box-shadow: none;
+  }
+
+  .ant-select-selector {
+    border: none !important;
+    border-bottom: 1px solid #bdb9b9 !important;
+  }
+
+  label {
+    text-align: left;
+    width: 110px;
+    display: inline-block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #535353;
+  }
+}
+
+.search input {
+  width: 100%;
+  border: none !important;
+}
+
+.tables :deep(td),
+.tables :deep(th) {
+  font-size: 14px !important;
+  padding: 2px 8px !important;
+  border-color: #aaaaaa !important;
+}
+
+:deep(.ant-table-measure-row) th,
+:deep(.ant-table-measure-row) td{
+  border-color: #aaaaaa !important;
+}
+
+.tables :deep(th) {
+  text-align: center !important;
+  font-weight: bold;
+  background-color: #cccccc;
+  line-height:30px;
+}
+
+.bg-white{
+  width: 250px !important;
+  min-height: 385px !important;
+  height: calc(100%);
+  border: 1px #cccccc solid;
+  background:white !important;
+}
+
+:deep(.ant-table-row-selected) td{
+  background: #0096c7 !important;
+}
+
+:deep(.ant-tree-list){
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:deep(.ant-checkbox) {
+  border: 1px solid #999999 !important;
+  border-radius: 0 !important;
+  margin-top: -10px !important;
+}
+.ant-checkbox-inner{
+  width:14px;
+  height:14px;
+}
+</style>
+<style>
+.head-title .scroll-container .scrollbar__wrap {
+  margin-bottom: -45px !important;
+}
+
+</style>
